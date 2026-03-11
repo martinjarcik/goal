@@ -7,6 +7,7 @@ type TodoViewModel = {
 type AddTodoAction = (label: string) => void;
 type ToggleTodoAction = (id: string) => void;
 type InputChangeAction = (value: string) => void;
+type DeleteTodoAction = (id: string) => void;
 
 function escapeHtml(text: string): string {
   return text
@@ -23,7 +24,8 @@ export function renderApp(
   onAdd: AddTodoAction = () => {},
   onToggle: ToggleTodoAction = () => {},
   inputValue = "",
-  onInputChange: InputChangeAction = () => {}
+  onInputChange: InputChangeAction = () => {},
+  _onDelete: DeleteTodoAction = () => {}
 ): void {
   const bodyContent =
     todos.length === 0

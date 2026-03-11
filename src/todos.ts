@@ -42,3 +42,7 @@ export function toggleTodo(todos: ReadonlyArray<Todo>, id: string): Todo[] {
       : todo
   );
 }
+
+export function deleteTodo(todos: ReadonlyArray<Todo>, id: string): Todo[] {
+  return todos.filter((todo) => todo.id !== id);
+}
