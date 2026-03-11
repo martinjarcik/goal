@@ -8,7 +8,7 @@ type AddTodoAction = (label: string) => void;
 export function renderApp(
   root: HTMLElement,
   todos: ReadonlyArray<TodoViewModel> = [],
-  _onAdd: AddTodoAction = () => {}
+  onAdd: AddTodoAction = () => {}
 ): void {
   const bodyContent =
     todos.length === 0
@@ -33,4 +33,32 @@ export function renderApp(
       </section>
     </main>
   `;
+
+  const form = root.querySelector<HTMLFormElement>(".todo-form");
+  const input = root.querySelector<HTMLInputElement>(".todo-input");
+  const addButton = root.querySelector<HTMLButtonElement>(".add-button");
+
+  if (!form || !input || !addButton) {
+    throw new Error("Add todo form elements not found");
+  }
+
+  const syncSubmitState = () => {
+    addButton.disabled = input.value.trim().length === 0;
+  };
+
+  input.addEventListener("input", syncSubmitState);
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const trimmedValue = input.value.trim();
+
+    if (trimmedValue.length === 0) {
+      syncSubmitState();
+      return;
+    }
+
+    onAdd(trimmedValue);
+    input.value = "";
+    syncSubmitState();
+  });
 }
