@@ -20,3 +20,14 @@ export function createInitialTodos(): Todo[] {
     completed: false
   }));
 }
+
+export function appendTodo(todos: ReadonlyArray<Todo>, label: string): Todo[] {
+  return [
+    ...todos,
+    {
+      id: `todo-${todos.length + 1}`,
+      label,
+      completed: false
+    }
+  ];
+}

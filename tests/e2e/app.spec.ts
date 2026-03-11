@@ -34,3 +34,26 @@ test("shows the correct todo content for empty and populated states", async ({ p
   await expect(page.getByText("Buy milk")).toBeVisible();
   await expect(page.getByText("Read book")).toBeVisible();
 });
+
+test("adds a todo from the input row", async ({ page }) => {
+  await page.goto("/");
+
+  const input = page.getByPlaceholder("New item");
+  const addButton = page.getByRole("button", { name: "Add" });
+
+  await expect(input).toBeVisible();
+  await expect(addButton).toBeDisabled();
+
+  await input.fill("Buy bread");
+
+  await expect(addButton).toBeEnabled();
+
+  await addButton.click();
+
+  await expect(input).toHaveValue("");
+  await expect(addButton).toBeDisabled();
+  await expect(page.getByText("No todos yet.")).toHaveCount(0);
+  await expect(page.getByRole("list")).toBeVisible();
+  await expect(page.getByRole("listitem")).toHaveCount(1);
+  await expect(page.getByText("Buy bread")).toBeVisible();
+});
