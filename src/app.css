@@ -26,10 +26,10 @@ body {
   background: #ffffff;
 }
 
-.app-root {
+.app-shell {
   min-height: 100vh;
 }
 
-.app-mount {
-  min-height: 100vh;
+.todo-card {
+  min-height: 1px;
 }
