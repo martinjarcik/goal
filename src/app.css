@@ -61,6 +61,13 @@ body {
 
 .todo-card-body {
   min-height: 24px;
+  margin-top: 20px;
+}
+
+.todo-empty-state {
+  margin: 0;
+  color: #9096a8;
+  font-size: 1rem;
 }
 
 @keyframes card-enter {

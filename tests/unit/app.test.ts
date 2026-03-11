@@ -22,4 +22,19 @@ describe("renderApp", () => {
     expect(screen.queryByRole("button")).toBeNull();
     expect(screen.queryByRole("list")).toBeNull();
   });
+
+  it("shows empty-state helper text when there are no todos", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    renderApp(root, []);
+
+    expect(screen.getByText("No todos yet.")).toBeTruthy();
+    expect(screen.queryByRole("list")).toBeNull();
+  });
 });
