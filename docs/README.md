@@ -6,6 +6,7 @@ This folder is the working memory for the project. Keep it current as the app ev
 
 - `docs/product-requirements.md`: current product scope and user-facing behavior
 - `docs/process-plan.md`: delivery approach and next build steps
+- `docs/tech-stack.md`: selected minimal stack and setup instructions
 - `docs/architecture.md`: app structure, stack, and technical assumptions
 - `docs/decision-log.md`: important decisions and why they were made
 - `docs/backlog.md`: ordered MVP feature backlog derived from the story map
@@ -22,7 +23,7 @@ This folder is the working memory for the project. Keep it current as the app ev
 
 - Product: simple Todo app
 - Delivery style: AI-assisted, iterative, small steps
-- Code status: app not started yet
+- Code status: neutral web starter initialized with working unit and e2e test setup
 
 ## Usage
 

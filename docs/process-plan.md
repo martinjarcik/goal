@@ -19,16 +19,17 @@ Build in small, reviewable steps and document each meaningful decision.
 
 ## Implementation Sequence
 
-1. Confirm platform and stack.
-2. Create the app scaffold.
-3. Implement `Application Initialize`.
-4. Implement `Display Todos`.
-5. Implement `Add Todo`.
-6. Implement `Complete Todo`.
-7. Implement `Delete Todo`.
-8. Verify each feature against its acceptance test.
-9. Add persistence only after the core MVP works.
-10. Polish UX, responsiveness, and cleanup.
+1. Install local tools: `git`, `node`, `npm`, `gh`.
+2. Initialize the app manually with `Vite` + `TypeScript` and no template scaffold.
+3. Add `Vitest` and `Playwright` before feature work starts.
+4. Implement `Application Initialize`.
+5. Implement `Display Todos`.
+6. Implement `Add Todo`.
+7. Implement `Complete Todo`.
+8. Implement `Delete Todo`.
+9. Verify each feature against its acceptance test.
+10. Add persistence only after the core MVP works.
+11. Polish UX, responsiveness, and cleanup.
 
 ## Review Checkpoints
 

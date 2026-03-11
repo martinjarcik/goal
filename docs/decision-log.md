@@ -31,3 +31,23 @@
 
 - Status: accepted
 - Reason: align the plan, design spec, and feature contracts around the story map without overlapping responsibilities
+
+### D-007: Use a minimal vanilla web stack with built-in test support
+
+- Status: accepted
+- Reason: `Vite` + `TypeScript` + plain CSS keeps the app trivial to understand, while `Vitest` and `Playwright` provide the required automated testing with minimal overhead
+
+### D-008: Avoid generated app scaffolding
+
+- Status: accepted
+- Reason: a manual setup is cleaner in this existing repo and avoids carrying unused demo files, assets, and example code
+
+### D-009: Keep Playwright browsers inside the project
+
+- Status: accepted
+- Reason: local browser installation avoids sandbox cache mismatches and makes the e2e setup reproducible in this repo
+
+### D-010: Keep the starter scaffold feature-neutral
+
+- Status: accepted
+- Reason: implementation should begin from neutral app scaffolding so `Application Initialize` remains the first actual product feature

@@ -38,6 +38,5 @@ Users can manage a small list of todos without complexity.
 
 ## Open Items
 
-- Target platform: web, mobile, or both
-- Preferred stack
-- Persistence: local only or backend
+- Persistence beyond the in-memory MVP
+- Deployment target
