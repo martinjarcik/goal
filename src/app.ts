@@ -1,9 +1,11 @@
 type TodoViewModel = {
   id: string;
   label: string;
+  completed: boolean;
 };
 
 type AddTodoAction = (label: string) => void;
+type ToggleTodoAction = (id: string) => void;
 
 function escapeHtml(text: string): string {
   return text
@@ -17,7 +19,8 @@ function escapeHtml(text: string): string {
 export function renderApp(
   root: HTMLElement,
   todos: ReadonlyArray<TodoViewModel> = [],
-  onAdd: AddTodoAction = () => {}
+  onAdd: AddTodoAction = () => {},
+  _onToggle: ToggleTodoAction = () => {}
 ): void {
   const bodyContent =
     todos.length === 0
