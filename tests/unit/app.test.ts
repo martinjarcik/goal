@@ -31,4 +31,20 @@ describe("renderApp", () => {
 
     expect(screen.getByRole("region", { name: "Todo app" })).toBeTruthy();
   });
+
+  it("shows placeholder text when no todos exist", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    renderApp(root, []);
+
+    expect(
+      screen.getByText("No todos yet. Start by adding your first item.")
+    ).toBeTruthy();
+  });
 });

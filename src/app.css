@@ -51,6 +51,11 @@ body {
   font-weight: 600;
 }
 
+.todo-empty {
+  margin: 20px 0 0;
+  color: #747d92;
+}
+
 @keyframes card-enter {
   from {
     opacity: 0;
