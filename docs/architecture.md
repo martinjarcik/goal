@@ -2,7 +2,7 @@
 
 ## Current State
 
-The application codebase includes the first product feature: a centered Todo shell card with title, gradient background, and initial entrance styling. Unit and Playwright test setup are working.
+The application codebase includes the first two product features: the centered Todo shell card plus passive empty and populated todo display states. Unit and Playwright test setup are working.
 
 ## Selected Stack
 
