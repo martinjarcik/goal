@@ -173,6 +173,50 @@ describe("renderApp", () => {
     expect(screen.getByText("Read book").classList.contains("todo-text-completed")).toBe(false);
   });
 
+  it("renders a delete button for each todo row", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    renderApp(root, [
+      { id: "todo-1", label: "Buy oranges", completed: false },
+      { id: "todo-2", label: "Read book", completed: false }
+    ]);
+
+    expect(screen.getAllByRole("button", { name: "Delete todo" })).toHaveLength(2);
+  });
+
+  it("calls onDelete with the selected todo id when the delete button is used", async () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    const onDelete = vi.fn();
+
+    renderApp(
+      root,
+      [{ id: "todo-1", label: "Buy oranges", completed: false }],
+      () => {},
+      () => {},
+      "",
+      () => {},
+      onDelete
+    );
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Delete todo" }));
+
+    expect(onDelete).toHaveBeenCalledWith("todo-1");
+  });
+
   it("submits the trimmed label and clears the input", async () => {
     document.body.innerHTML = '<div id="app"></div>';
 

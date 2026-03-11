@@ -7,6 +7,7 @@ type TodoViewModel = {
 type AddTodoAction = (label: string) => void;
 type ToggleTodoAction = (id: string) => void;
 type InputChangeAction = (value: string) => void;
+type DeleteTodoAction = (id: string) => void;
 
 function escapeHtml(text: string): string {
   return text
@@ -23,7 +24,8 @@ export function renderApp(
   onAdd: AddTodoAction = () => {},
   onToggle: ToggleTodoAction = () => {},
   inputValue = "",
-  onInputChange: InputChangeAction = () => {}
+  onInputChange: InputChangeAction = () => {},
+  onDelete: DeleteTodoAction = () => {}
 ): void {
   const bodyContent =
     todos.length === 0
@@ -40,6 +42,12 @@ export function renderApp(
                       todo.label
                     )}</span>
                   </label>
+                  <button class="delete-button" type="button" data-todo-id="${todo.id}" aria-label="Delete todo">
+                    <svg class="delete-icon" viewBox="0 0 16 16" aria-hidden="true">
+                      <path d="M4 4L12 12" />
+                      <path d="M12 4L4 12" />
+                    </svg>
+                  </button>
                 </li>
               `
             )
@@ -64,6 +72,7 @@ export function renderApp(
   const input = root.querySelector<HTMLInputElement>(".todo-input");
   const addButton = root.querySelector<HTMLButtonElement>(".add-button");
   const toggleInputs = root.querySelectorAll<HTMLInputElement>(".todo-checkbox");
+  const deleteButtons = root.querySelectorAll<HTMLButtonElement>(".delete-button");
 
   if (!form || !input || !addButton) {
     throw new Error("Todo form elements not found");
@@ -104,6 +113,18 @@ export function renderApp(
       }
 
       onToggle(todoId);
+    });
+  });
+
+  deleteButtons.forEach((deleteButton) => {
+    deleteButton.addEventListener("click", () => {
+      const todoId = deleteButton.dataset.todoId;
+
+      if (!todoId) {
+        throw new Error("Todo delete id not found");
+      }
+
+      onDelete(todoId);
     });
   });
 

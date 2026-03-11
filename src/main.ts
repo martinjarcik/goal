@@ -1,6 +1,6 @@
 import "./app.css";
 import { renderApp } from "./app";
-import { appendTodo, createInitialTodos, toggleTodo } from "./todos";
+import { appendTodo, createInitialTodos, deleteTodo, toggleTodo } from "./todos";
 
 const root = document.querySelector<HTMLElement>("#app");
 
@@ -23,12 +23,17 @@ function handleToggle(id: string): void {
   render();
 }
 
+function handleDelete(id: string): void {
+  todos = deleteTodo(todos, id);
+  render();
+}
+
 function handleInputChange(value: string): void {
   draftTodoText = value;
 }
 
 function render(): void {
-  renderApp(appRoot, todos, handleAdd, handleToggle, draftTodoText, handleInputChange);
+  renderApp(appRoot, todos, handleAdd, handleToggle, draftTodoText, handleInputChange, handleDelete);
 }
 
 render();

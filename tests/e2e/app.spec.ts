@@ -109,3 +109,28 @@ test("preserves in-progress add input text when toggling completion", async ({ p
 
   await expect(input).toHaveValue("Buy bread");
 });
+
+test("deletes a todo from the list", async ({ page }) => {
+  await page.addInitScript((todos) => {
+    (window as { __GOAL_INITIAL_TODOS__?: Array<{ id: string; label: string }> }).__GOAL_INITIAL_TODOS__ =
+      todos;
+  }, [
+    { id: "todo-1", label: "Buy oranges" },
+    { id: "todo-2", label: "Read book" }
+  ]);
+
+  await page.goto("/");
+
+  const buyOrangesRow = page.getByRole("listitem").filter({ hasText: "Buy oranges" });
+  const readBookRow = page.getByRole("listitem").filter({ hasText: "Read book" });
+  const deleteButton = buyOrangesRow.getByRole("button", { name: "Delete todo" });
+
+  await expect(buyOrangesRow).toBeVisible();
+  await expect(readBookRow).toBeVisible();
+
+  await deleteButton.click();
+
+  await expect(buyOrangesRow).toHaveCount(0);
+  await expect(readBookRow).toBeVisible();
+  await expect(page.getByRole("listitem")).toHaveCount(1);
+});
