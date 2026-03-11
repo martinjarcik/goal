@@ -1,4 +1,10 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Locator } from "@playwright/test";
+
+async function hasLineThroughText(locator: Locator): Promise<boolean> {
+  return locator.evaluate(
+    (element: Element) => window.getComputedStyle(element).textDecorationLine.includes("line-through")
+  );
+}
 
 test("shows the Todo app shell on first load", async ({ page }) => {
   await page.goto("/");
@@ -62,19 +68,44 @@ test("marks a todo as complete", async ({ page }) => {
   await page.addInitScript((todos) => {
     (window as { __GOAL_INITIAL_TODOS__?: Array<{ id: string; label: string }> }).__GOAL_INITIAL_TODOS__ =
       todos;
-  }, [{ id: "todo-1", label: "Walk the dog" }]);
+  }, [
+    { id: "todo-1", label: "Walk the dog" },
+    { id: "todo-2", label: "Read book" }
+  ]);
 
   await page.goto("/");
 
   const toggle = page.getByRole("checkbox", { name: "Walk the dog" });
+  const otherToggle = page.getByRole("checkbox", { name: "Read book" });
   const label = page.getByText("Walk the dog");
+  const otherLabel = page.getByText("Read book");
 
   await expect(toggle).not.toBeChecked();
+  await expect(otherToggle).not.toBeChecked();
+  await expect.poll(async () => hasLineThroughText(label)).toBe(false);
+  await expect.poll(async () => hasLineThroughText(otherLabel)).toBe(false);
 
   await toggle.click();
 
   await expect(toggle).toBeChecked();
-  await expect
-    .poll(async () => label.evaluate((element) => window.getComputedStyle(element).textDecorationLine))
-    .toContain("line-through");
+  await expect(otherToggle).not.toBeChecked();
+  await expect.poll(async () => hasLineThroughText(label)).toBe(true);
+  await expect.poll(async () => hasLineThroughText(otherLabel)).toBe(false);
+});
+
+test("preserves in-progress add input text when toggling completion", async ({ page }) => {
+  await page.addInitScript((todos) => {
+    (window as { __GOAL_INITIAL_TODOS__?: Array<{ id: string; label: string }> }).__GOAL_INITIAL_TODOS__ =
+      todos;
+  }, [{ id: "todo-1", label: "Walk the dog" }]);
+
+  await page.goto("/");
+
+  const input = page.getByPlaceholder("New item");
+  const toggle = page.getByRole("checkbox", { name: "Walk the dog" });
+
+  await input.fill("Buy bread");
+  await toggle.click();
+
+  await expect(input).toHaveValue("Buy bread");
 });

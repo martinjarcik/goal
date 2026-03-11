@@ -11,6 +11,7 @@ if (!root) {
 const appRoot = root;
 
 let todos = createInitialTodos();
+let draftTodoText = "";
 
 function handleAdd(label: string): void {
   todos = appendTodo(todos, label);
@@ -22,8 +23,12 @@ function handleToggle(id: string): void {
   render();
 }
 
+function handleInputChange(value: string): void {
+  draftTodoText = value;
+}
+
 function render(): void {
-  renderApp(appRoot, todos, handleAdd, handleToggle);
+  renderApp(appRoot, todos, handleAdd, handleToggle, draftTodoText, handleInputChange);
 }
 
 render();

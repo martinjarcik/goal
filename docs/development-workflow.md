@@ -34,15 +34,17 @@ Inform about finishing each individual sub-step bellow.
 1. Add one failing unit test.
 2. Implement the smallest functional change to make it pass.
 3. Refactor the implementation to improve the code and complete the code.
-4. Run the test
-4. Commit after each refactored green step.
+4. Critically review the test and refactor if needed.
+5. Run the test
+6. Commit after each refactored green step.
 
 ## Step 5: Spec Review
 
-1. Review the result against the feature specification.
-2. Fix any misalignment.
-3. Confirm the user acceptance test passes.
-4. If fixes were required, commit them.
+1. Critically review implementation of the UAT and whether it really tests real application / user interactions. The assertion should not be just white-boxing.  Refactor if needed.
+2. Review the result against the feature specification.
+3. Fix any misalignment.
+4. Confirm the user acceptance test passes.
+5. If fixes were required, commit them.
 
 ## Step 6: Manual Validation And PR
 

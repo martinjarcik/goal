@@ -6,6 +6,7 @@ type TodoViewModel = {
 
 type AddTodoAction = (label: string) => void;
 type ToggleTodoAction = (id: string) => void;
+type InputChangeAction = (value: string) => void;
 
 function escapeHtml(text: string): string {
   return text
@@ -20,7 +21,9 @@ export function renderApp(
   root: HTMLElement,
   todos: ReadonlyArray<TodoViewModel> = [],
   onAdd: AddTodoAction = () => {},
-  onToggle: ToggleTodoAction = () => {}
+  onToggle: ToggleTodoAction = () => {},
+  inputValue = "",
+  onInputChange: InputChangeAction = () => {}
 ): void {
   const bodyContent =
     todos.length === 0
@@ -66,11 +69,16 @@ export function renderApp(
     throw new Error("Todo form elements not found");
   }
 
+  input.value = inputValue;
+
   const syncSubmitState = () => {
     addButton.disabled = input.value.trim().length === 0;
   };
 
-  input.addEventListener("input", syncSubmitState);
+  input.addEventListener("input", () => {
+    onInputChange(input.value);
+    syncSubmitState();
+  });
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -81,9 +89,10 @@ export function renderApp(
       return;
     }
 
-    onAdd(trimmedValue);
+    onInputChange("");
     input.value = "";
     syncSubmitState();
+    onAdd(trimmedValue);
   });
 
   toggleInputs.forEach((toggleInput) => {
@@ -97,4 +106,6 @@ export function renderApp(
       onToggle(todoId);
     });
   });
+
+  syncSubmitState();
 }
