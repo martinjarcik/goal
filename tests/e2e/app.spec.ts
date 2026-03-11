@@ -31,3 +31,22 @@ test("shows the correct content for empty and populated todo states", async ({
     seededPage.getByText("No todos yet. Start by adding your first item.")
   ).toHaveCount(0);
 });
+
+test("lets the user add a todo from the input row", async ({ page }) => {
+  await page.goto("/");
+
+  const input = page.getByPlaceholder("New item");
+  const addButton = page.getByRole("button", { name: "Add" });
+
+  await expect(input).toBeVisible();
+  await expect(addButton).toBeDisabled();
+
+  await input.fill("Buy bread");
+  await expect(addButton).toBeEnabled();
+
+  await addButton.click();
+
+  await expect(page.getByRole("listitem")).toHaveCount(1);
+  await expect(page.getByText("Buy bread")).toBeVisible();
+  await expect(input).toHaveValue("");
+});
