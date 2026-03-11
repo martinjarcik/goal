@@ -24,3 +24,13 @@ export function renderApp(root: HTMLElement, todos: Todo[]): void {
     </main>
   `;
 }
+
+export function mountApp(root: HTMLElement, initialTodos: Todo[]): void {
+  let todos = [...initialTodos];
+
+  const rerender = () => {
+    renderApp(root, todos);
+  };
+
+  rerender();
+}
