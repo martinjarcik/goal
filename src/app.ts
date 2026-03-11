@@ -6,12 +6,20 @@ function renderEmptyState(): string {
   `;
 }
 
+function renderTodoList(todos: Todo[]): string {
+  const items = todos
+    .map((todo) => `<li class="todo-item"><span>${todo.label}</span></li>`)
+    .join("");
+
+  return `<ul class="todo-list">${items}</ul>`;
+}
+
 export function renderApp(root: HTMLElement, todos: Todo[]): void {
   root.innerHTML = `
     <main class="app-root" data-testid="app-root">
       <section class="todo-card" aria-label="Todo app">
         <h1 class="app-title">Todo</h1>
-        ${todos.length === 0 ? renderEmptyState() : ""}
+        ${todos.length === 0 ? renderEmptyState() : renderTodoList(todos)}
       </section>
     </main>
   `;

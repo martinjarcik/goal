@@ -56,6 +56,16 @@ body {
   color: #747d92;
 }
 
+.todo-list {
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.todo-item + .todo-item {
+  margin-top: 16px;
+}
+
 @keyframes card-enter {
   from {
     opacity: 0;

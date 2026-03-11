@@ -47,4 +47,39 @@ describe("renderApp", () => {
       screen.getByText("No todos yet. Start by adding your first item.")
     ).toBeTruthy();
   });
+
+  it("renders one list row per todo item", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    renderApp(root, [
+      { id: "1", label: "Buy milk" },
+      { id: "2", label: "Buy oranges" }
+    ]);
+
+    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+    expect(screen.getByText("Buy milk")).toBeTruthy();
+    expect(screen.getByText("Buy oranges")).toBeTruthy();
+  });
+
+  it("hides the placeholder when todos exist", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    renderApp(root, [{ id: "1", label: "Buy milk" }]);
+
+    expect(
+      screen.queryByText("No todos yet. Start by adding your first item.")
+    ).toBeNull();
+  });
 });
