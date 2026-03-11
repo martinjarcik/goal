@@ -54,6 +54,13 @@ export function mountApp(root: HTMLElement, initialTodos: Todo[]): void {
 
   const rerender = () => {
     renderApp(root, todos, inputValue);
+
+    const input = root.querySelector<HTMLInputElement>(".todo-input");
+
+    input?.addEventListener("input", (event) => {
+      inputValue = (event.target as HTMLInputElement).value;
+      rerender();
+    });
   };
 
   rerender();

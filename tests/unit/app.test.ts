@@ -103,4 +103,33 @@ describe("mountApp", () => {
         .disabled
     ).toBe(true);
   });
+
+  it("enables the add button only when the trimmed input has text", async () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    mountApp(root, []);
+
+    const user = userEvent.setup();
+    const initialButton = screen.getByRole("button", {
+      name: "Add"
+    }) as HTMLButtonElement;
+
+    await user.type(screen.getByPlaceholderText("New item"), "   ");
+    expect(
+      (screen.getByRole("button", { name: "Add" }) as HTMLButtonElement).disabled
+    ).toBe(true);
+
+    await user.clear(screen.getByPlaceholderText("New item"));
+    await user.type(screen.getByPlaceholderText("New item"), "Buy bread");
+    expect(initialButton.disabled).toBe(true);
+    expect(
+      (screen.getByRole("button", { name: "Add" }) as HTMLButtonElement).disabled
+    ).toBe(false);
+  });
 });
