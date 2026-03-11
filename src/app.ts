@@ -42,6 +42,7 @@ export function renderApp(
                       todo.label
                     )}</span>
                   </label>
+                  <button class="delete-button" type="button" data-todo-id="${todo.id}" aria-label="Delete todo"></button>
                 </li>
               `
             )

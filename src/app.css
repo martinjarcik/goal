@@ -134,6 +134,10 @@ body {
 
 .todo-item {
   padding: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .todo-item + .todo-item {
@@ -163,6 +167,15 @@ body {
   color: #9aa1b2;
   text-decoration: line-through;
   text-decoration-thickness: 1px;
+}
+
+.delete-button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: #2d3443;
 }
 
 @keyframes card-enter {
