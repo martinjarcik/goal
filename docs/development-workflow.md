@@ -30,7 +30,7 @@ This project currently has a neutral scaffold that is not yet committed.
 ## Step 4: Unit-Test Loop
 
 Repeat one requirement at a time:
-Inform about finishing each individual step bellow.
+Inform about finishing each individual sub-step bellow.
 
 1. Add one failing unit test.
 2. Implement the smallest functional change to make it pass.

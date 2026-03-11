@@ -3,11 +3,17 @@
   line-height: 1.5;
   font-weight: 400;
   color: #1f2430;
-  background: #ffffff;
+  background: #f4f7ff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --app-background: linear-gradient(135deg, #ece8ff 0%, #eef2ff 45%, #f4f7ff 100%);
+  --card-background: #fcfcff;
+  --card-border: rgba(124, 92, 255, 0.18);
+  --card-shadow: 0 14px 40px rgba(80, 58, 160, 0.14);
+  --title-color: #1f2430;
+  --card-radius: 20px;
 }
 
 * {
@@ -23,13 +29,65 @@ body,
 
 body {
   min-height: 100vh;
-  background: #ffffff;
+  background: #f4f7ff;
 }
 
-.app-root {
+.app-shell {
+  display: grid;
   min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+  background: var(--app-background);
 }
 
-.app-mount {
-  min-height: 100vh;
+.todo-card {
+  width: min(100%, 460px);
+  min-height: 1px;
+  padding: 32px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  background: var(--card-background);
+  box-shadow: var(--card-shadow);
+  animation: card-enter 320ms ease-out both;
+}
+
+.app-title {
+  margin: 0;
+  color: var(--title-color);
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.todo-card-body {
+  min-height: 24px;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .app-shell {
+    padding: 16px;
+  }
+
+  .todo-card {
+    width: min(100%, calc(100vw - 32px));
+    padding: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .todo-card {
+    animation: none;
+  }
 }
