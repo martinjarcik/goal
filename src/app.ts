@@ -1,4 +1,9 @@
-export function renderApp(root: HTMLElement): void {
+type TodoViewModel = {
+  id: string;
+  label: string;
+};
+
+export function renderApp(root: HTMLElement, _todos: ReadonlyArray<TodoViewModel> = []): void {
   root.innerHTML = `
     <main class="app-shell">
       <section class="todo-card" aria-label="Todo app">
