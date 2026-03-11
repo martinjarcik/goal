@@ -4,7 +4,7 @@ export type Todo = {
   completed: boolean;
 };
 
-type BootstrapTodo = Pick<Todo, "id" | "label">;
+type BootstrapTodo = Pick<Todo, "id" | "label"> & Partial<Pick<Todo, "completed">>;
 
 export function createInitialTodos(): Todo[] {
   const bootstrapTodos = (
@@ -17,7 +17,7 @@ export function createInitialTodos(): Todo[] {
 
   return bootstrapTodos.map((todo) => ({
     ...todo,
-    completed: false
+    completed: todo.completed ?? false
   }));
 }
 
@@ -30,4 +30,15 @@ export function appendTodo(todos: ReadonlyArray<Todo>, label: string): Todo[] {
       completed: false
     }
   ];
+}
+
+export function toggleTodo(todos: ReadonlyArray<Todo>, id: string): Todo[] {
+  return todos.map((todo) =>
+    todo.id === id
+      ? {
+          ...todo,
+          completed: !todo.completed
+        }
+      : todo
+  );
 }

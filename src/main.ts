@@ -1,6 +1,6 @@
 import "./app.css";
 import { renderApp } from "./app";
-import { appendTodo, createInitialTodos } from "./todos";
+import { appendTodo, createInitialTodos, toggleTodo } from "./todos";
 
 const root = document.querySelector<HTMLElement>("#app");
 
@@ -11,14 +11,24 @@ if (!root) {
 const appRoot = root;
 
 let todos = createInitialTodos();
+let draftTodoText = "";
 
 function handleAdd(label: string): void {
   todos = appendTodo(todos, label);
   render();
 }
 
+function handleToggle(id: string): void {
+  todos = toggleTodo(todos, id);
+  render();
+}
+
+function handleInputChange(value: string): void {
+  draftTodoText = value;
+}
+
 function render(): void {
-  renderApp(appRoot, todos, handleAdd);
+  renderApp(appRoot, todos, handleAdd, handleToggle, draftTodoText, handleInputChange);
 }
 
 render();

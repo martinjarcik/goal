@@ -1,9 +1,12 @@
 type TodoViewModel = {
   id: string;
   label: string;
+  completed: boolean;
 };
 
 type AddTodoAction = (label: string) => void;
+type ToggleTodoAction = (id: string) => void;
+type InputChangeAction = (value: string) => void;
 
 function escapeHtml(text: string): string {
   return text
@@ -17,7 +20,10 @@ function escapeHtml(text: string): string {
 export function renderApp(
   root: HTMLElement,
   todos: ReadonlyArray<TodoViewModel> = [],
-  onAdd: AddTodoAction = () => {}
+  onAdd: AddTodoAction = () => {},
+  onToggle: ToggleTodoAction = () => {},
+  inputValue = "",
+  onInputChange: InputChangeAction = () => {}
 ): void {
   const bodyContent =
     todos.length === 0
@@ -25,7 +31,18 @@ export function renderApp(
       : `
         <ul class="todo-list">
           ${todos
-            .map((todo) => `<li class="todo-item">${escapeHtml(todo.label)}</li>`)
+            .map(
+              (todo) => `
+                <li class="todo-item">
+                  <label class="todo-main">
+                    <input class="todo-checkbox" type="checkbox" data-todo-id="${todo.id}" ${todo.completed ? "checked" : ""} />
+                    <span class="todo-text${todo.completed ? " todo-text-completed" : ""}">${escapeHtml(
+                      todo.label
+                    )}</span>
+                  </label>
+                </li>
+              `
+            )
             .join("")}
         </ul>
       `;
@@ -46,16 +63,22 @@ export function renderApp(
   const form = root.querySelector<HTMLFormElement>(".todo-form");
   const input = root.querySelector<HTMLInputElement>(".todo-input");
   const addButton = root.querySelector<HTMLButtonElement>(".add-button");
+  const toggleInputs = root.querySelectorAll<HTMLInputElement>(".todo-checkbox");
 
   if (!form || !input || !addButton) {
-    throw new Error("Add todo form elements not found");
+    throw new Error("Todo form elements not found");
   }
+
+  input.value = inputValue;
 
   const syncSubmitState = () => {
     addButton.disabled = input.value.trim().length === 0;
   };
 
-  input.addEventListener("input", syncSubmitState);
+  input.addEventListener("input", () => {
+    onInputChange(input.value);
+    syncSubmitState();
+  });
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -66,8 +89,23 @@ export function renderApp(
       return;
     }
 
-    onAdd(trimmedValue);
+    onInputChange("");
     input.value = "";
     syncSubmitState();
+    onAdd(trimmedValue);
   });
+
+  toggleInputs.forEach((toggleInput) => {
+    toggleInput.addEventListener("change", () => {
+      const todoId = toggleInput.dataset.todoId;
+
+      if (!todoId) {
+        throw new Error("Todo toggle id not found");
+      }
+
+      onToggle(todoId);
+    });
+  });
+
+  syncSubmitState();
 }

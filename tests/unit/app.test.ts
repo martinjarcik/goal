@@ -49,8 +49,8 @@ describe("renderApp", () => {
     }
 
     renderApp(root, [
-      { id: "todo-1", label: "Buy milk" },
-      { id: "todo-2", label: "Read book" }
+      { id: "todo-1", label: "Buy milk", completed: false },
+      { id: "todo-2", label: "Read book", completed: false }
     ]);
 
     expect(screen.queryByText("No todos yet.")).toBeNull();
@@ -59,6 +59,28 @@ describe("renderApp", () => {
     expect(screen.getByText("Buy milk")).toBeTruthy();
     expect(screen.getByText("Read book")).toBeTruthy();
     expect((screen.getByRole("button", { name: "Add" }) as HTMLButtonElement).disabled).toBe(true);
+  });
+
+  it("renders completion controls that reflect todo completion state", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    renderApp(root, [
+      { id: "todo-1", label: "Walk the dog", completed: false },
+      { id: "todo-2", label: "Read book", completed: true }
+    ]);
+
+    expect((screen.getByRole("checkbox", { name: "Walk the dog" }) as HTMLInputElement).checked).toBe(
+      false
+    );
+    expect((screen.getByRole("checkbox", { name: "Read book" }) as HTMLInputElement).checked).toBe(
+      true
+    );
   });
 
   it("renders todo labels as text instead of injecting HTML", () => {
@@ -71,7 +93,11 @@ describe("renderApp", () => {
     }
 
     renderApp(root, [
-      { id: "todo-1", label: '<span data-testid="xss-marker">Buy milk</span>' }
+      {
+        id: "todo-1",
+        label: '<span data-testid="xss-marker">Buy milk</span>',
+        completed: false
+      }
     ]);
 
     expect(screen.queryByTestId("xss-marker")).toBeNull();
@@ -103,6 +129,48 @@ describe("renderApp", () => {
     await user.type(input, "Buy bread");
 
     expect((addButton as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  it("calls onToggle with the selected todo id when the completion control is used", async () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    const onToggle = vi.fn();
+
+    renderApp(
+      root,
+      [{ id: "todo-1", label: "Walk the dog", completed: false }],
+      () => {},
+      onToggle
+    );
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("checkbox", { name: "Walk the dog" }));
+
+    expect(onToggle).toHaveBeenCalledWith("todo-1");
+  });
+
+  it("applies completed styling only to completed todo labels", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    renderApp(root, [
+      { id: "todo-1", label: "Walk the dog", completed: true },
+      { id: "todo-2", label: "Read book", completed: false }
+    ]);
+
+    expect(screen.getByText("Walk the dog").classList.contains("todo-text-completed")).toBe(true);
+    expect(screen.getByText("Read book").classList.contains("todo-text-completed")).toBe(false);
   });
 
   it("submits the trimmed label and clears the input", async () => {
