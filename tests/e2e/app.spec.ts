@@ -1,16 +1,33 @@
 import { expect, test } from "@playwright/test";
 
-test("shows the application shell on first load", async ({ page }) => {
-  await page.goto("/");
+test("shows the correct content for empty and populated todo states", async ({
+  browser
+}) => {
+  const emptyPage = await browser.newPage();
+  await emptyPage.goto("/");
 
-  await expect(page.getByRole("heading", { name: "Todo" })).toBeVisible();
+  await expect(emptyPage.getByRole("heading", { name: "Todo" })).toBeVisible();
+  await expect(
+    emptyPage.getByText("No todos yet. Start by adding your first item.")
+  ).toBeVisible();
 
-  const card = page.getByLabel("Todo app");
-  await expect(card).toBeVisible();
-
-  const backgroundImage = await page.locator("body").evaluate((element) => {
-    return window.getComputedStyle(element).backgroundImage;
+  const seededContext = await browser.newContext();
+  await seededContext.addInitScript(() => {
+    (
+      window as Window & {
+        __TEST_TODOS__?: Array<{ id: string; label: string }>;
+      }
+    ).__TEST_TODOS__ = [
+      { id: "1", label: "Buy milk" },
+      { id: "2", label: "Buy oranges" }
+    ];
   });
 
-  expect(backgroundImage).not.toBe("none");
+  const seededPage = await seededContext.newPage();
+  await seededPage.goto("/");
+
+  await expect(seededPage.getByRole("listitem")).toHaveCount(2);
+  await expect(
+    seededPage.getByText("No todos yet. Start by adding your first item.")
+  ).toHaveCount(0);
 });
