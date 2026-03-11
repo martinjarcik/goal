@@ -2,7 +2,7 @@
 
 ## Current State
 
-The application codebase is initialized with a neutral scaffold, one unit smoke test, and one Playwright smoke test. No product feature is implemented yet.
+The application codebase includes the first product feature: a centered Todo shell card with title, gradient background, and initial entrance styling. Unit and Playwright test setup are working.
 
 ## Selected Stack
 
