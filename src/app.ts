@@ -5,7 +5,15 @@ type TodoViewModel = {
 
 export function renderApp(root: HTMLElement, todos: ReadonlyArray<TodoViewModel> = []): void {
   const bodyContent =
-    todos.length === 0 ? '<p class="todo-empty-state">No todos yet.</p>' : "";
+    todos.length === 0
+      ? '<p class="todo-empty-state">No todos yet.</p>'
+      : `
+        <ul class="todo-list">
+          ${todos
+            .map((todo) => `<li class="todo-item">${todo.label}</li>`)
+            .join("")}
+        </ul>
+      `;
 
   root.innerHTML = `
     <main class="app-shell">

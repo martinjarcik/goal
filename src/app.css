@@ -70,6 +70,22 @@ body {
   font-size: 1rem;
 }
 
+.todo-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.todo-item {
+  padding: 12px 0;
+  color: #2d3443;
+  font-size: 1rem;
+}
+
+.todo-item + .todo-item {
+  margin-top: 2px;
+}
+
 @keyframes card-enter {
   from {
     opacity: 0;

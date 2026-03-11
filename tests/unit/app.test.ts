@@ -37,4 +37,26 @@ describe("renderApp", () => {
     expect(screen.getByText("No todos yet.")).toBeTruthy();
     expect(screen.queryByRole("list")).toBeNull();
   });
+
+  it("renders a passive list when todos are provided", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    renderApp(root, [
+      { id: "todo-1", label: "Buy milk" },
+      { id: "todo-2", label: "Read book" }
+    ]);
+
+    expect(screen.queryByText("No todos yet.")).toBeNull();
+    expect(screen.getByRole("list")).toBeTruthy();
+    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+    expect(screen.getByText("Buy milk")).toBeTruthy();
+    expect(screen.getByText("Read book")).toBeTruthy();
+    expect(screen.queryByRole("button")).toBeNull();
+  });
 });
