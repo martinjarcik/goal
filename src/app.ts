@@ -26,7 +26,21 @@ function renderEmptyState(): string {
 
 function renderTodoList(todos: Todo[]): string {
   const items = todos
-    .map((todo) => `<li class="todo-item"><span>${todo.label}</span></li>`)
+    .map(
+      (todo) => `
+        <li class="todo-item">
+          <label class="todo-main">
+            <input
+              class="todo-checkbox"
+              type="checkbox"
+              data-todo-id="${todo.id}"
+              ${todo.completed ? "checked" : ""}
+            />
+            <span class="todo-text">${todo.label}</span>
+          </label>
+        </li>
+      `
+    )
     .join("");
 
   return `<ul class="todo-list">${items}</ul>`;

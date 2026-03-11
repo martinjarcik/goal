@@ -83,6 +83,24 @@ describe("renderApp", () => {
       screen.queryByText("No todos yet. Start by adding your first item.")
     ).toBeNull();
   });
+
+  it("renders a checkbox control whose checked state follows the todo", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    renderApp(root, [{ id: "1", label: "Walk the dog", completed: true }]);
+
+    expect(
+      (screen.getByRole("checkbox", {
+        name: "Walk the dog"
+      }) as HTMLInputElement).checked
+    ).toBe(true);
+  });
 });
 
 describe("mountApp", () => {

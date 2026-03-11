@@ -101,6 +101,21 @@ body {
   margin-top: 16px;
 }
 
+.todo-main {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.todo-checkbox {
+  width: 22px;
+  height: 22px;
+}
+
+.todo-text {
+  color: #2d3443;
+}
+
 @keyframes card-enter {
   from {
     opacity: 0;
