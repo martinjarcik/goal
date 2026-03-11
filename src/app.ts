@@ -25,7 +25,7 @@ export function renderApp(
   onToggle: ToggleTodoAction = () => {},
   inputValue = "",
   onInputChange: InputChangeAction = () => {},
-  _onDelete: DeleteTodoAction = () => {}
+  onDelete: DeleteTodoAction = () => {}
 ): void {
   const bodyContent =
     todos.length === 0
@@ -67,6 +67,7 @@ export function renderApp(
   const input = root.querySelector<HTMLInputElement>(".todo-input");
   const addButton = root.querySelector<HTMLButtonElement>(".add-button");
   const toggleInputs = root.querySelectorAll<HTMLInputElement>(".todo-checkbox");
+  const deleteButtons = root.querySelectorAll<HTMLButtonElement>(".delete-button");
 
   if (!form || !input || !addButton) {
     throw new Error("Todo form elements not found");
@@ -107,6 +108,18 @@ export function renderApp(
       }
 
       onToggle(todoId);
+    });
+  });
+
+  deleteButtons.forEach((deleteButton) => {
+    deleteButton.addEventListener("click", () => {
+      const todoId = deleteButton.dataset.todoId;
+
+      if (!todoId) {
+        throw new Error("Todo delete id not found");
+      }
+
+      onDelete(todoId);
     });
   });
 
