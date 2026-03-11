@@ -1,0 +1,15 @@
+---
+description: Keep docs folder current for product context
+alwaysApply: true
+---
+
+# Project Documentation Rule
+
+- Use `docs/README.md` as the entry point for project context.
+- Keep `docs` updated whenever we define or change requirements, plans, decisions, architecture, or notable assets.
+- Prefer short, task-focused docs that are easy to scan.
+- When starting new work, check the relevant docs first if project context matters.
+- Record meaningful decisions in `docs/decision-log.md`.
+- Update `docs/product-requirements.md` when scope or behavior changes.
+- Update `docs/architecture.md` when structure, stack, or data flow changes.
+- Reference supporting assets from docs so they stay discoverable.
