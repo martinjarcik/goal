@@ -1,7 +1,8 @@
 import { screen } from "@testing-library/dom";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 
-import { renderApp } from "../../src/app";
+import { mountApp, renderApp } from "../../src/app";
 
 describe("renderApp", () => {
   it("renders the Todo heading", () => {
@@ -81,5 +82,25 @@ describe("renderApp", () => {
     expect(
       screen.queryByText("No todos yet. Start by adding your first item.")
     ).toBeNull();
+  });
+});
+
+describe("mountApp", () => {
+  it("renders the add form with a disabled button when the input is empty", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    mountApp(root, []);
+
+    expect(screen.getByPlaceholderText("New item")).toBeTruthy();
+    expect(
+      (screen.getByRole("button", { name: "Add" }) as HTMLButtonElement)
+        .disabled
+    ).toBe(true);
   });
 });
