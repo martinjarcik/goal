@@ -24,7 +24,7 @@ This folder is the working memory for the project. Keep it current as the app ev
 
 - Product: simple Todo app
 - Delivery style: AI-assisted, iterative, small steps
-- Code status: features 1 (`Application Initialize`), 2 (`Display Todos`), and 3 (`Add Todo`) implemented, working unit and e2e test setup in place
+- Code status: features 1 (`Application Initialize`), 2 (`Display Todos`), 3 (`Add Todo`), and 4 (`Complete Todo`) implemented, working unit and e2e test setup in place
 
 ## Usage
 

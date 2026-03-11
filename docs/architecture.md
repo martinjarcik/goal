@@ -2,7 +2,7 @@
 
 ## Current State
 
-The application codebase includes the first three product features: the centered Todo shell card, passive empty and populated todo display states, and local add-todo interactions. Unit and Playwright test setup are working.
+The application codebase includes the first four product features: the centered Todo shell card, passive display states, add-todo interactions, and completion toggling with completed styling. Unit and Playwright test setup are working.
 
 ## Selected Stack
 
