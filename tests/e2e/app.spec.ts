@@ -50,3 +50,29 @@ test("lets the user add a todo from the input row", async ({ page }) => {
   await expect(page.getByText("Buy bread")).toBeVisible();
   await expect(input).toHaveValue("");
 });
+
+test("lets the user mark a todo as complete", async ({ browser }) => {
+  const context = await browser.newContext();
+  await context.addInitScript(() => {
+    (
+      window as Window & {
+        __TEST_TODOS__?: Array<{ id: string; label: string; completed: boolean }>;
+      }
+    ).__TEST_TODOS__ = [
+      { id: "1", label: "Walk the dog", completed: false }
+    ];
+  });
+
+  const page = await context.newPage();
+  await page.goto("/");
+
+  const checkbox = page.getByRole("checkbox", { name: "Walk the dog" });
+  const todoText = page.getByText("Walk the dog");
+
+  await expect(checkbox).not.toBeChecked();
+
+  await checkbox.click();
+
+  await expect(checkbox).toBeChecked();
+  await expect(todoText).toHaveCSS("text-decoration-line", "line-through");
+});
