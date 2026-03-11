@@ -42,7 +42,12 @@ export function renderApp(
                       todo.label
                     )}</span>
                   </label>
-                  <button class="delete-button" type="button" data-todo-id="${todo.id}" aria-label="Delete todo"></button>
+                  <button class="delete-button" type="button" data-todo-id="${todo.id}" aria-label="Delete todo">
+                    <svg class="delete-icon" viewBox="0 0 16 16" aria-hidden="true">
+                      <path d="M4 4L12 12" />
+                      <path d="M12 4L4 12" />
+                    </svg>
+                  </button>
                 </li>
               `
             )
