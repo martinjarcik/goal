@@ -13,7 +13,7 @@ describe("renderApp", () => {
       throw new Error("App root not found in test");
     }
 
-    renderApp(root);
+    renderApp(root, []);
 
     expect(screen.getByRole("heading", { name: "Todo" })).toBeTruthy();
   });
@@ -27,7 +27,7 @@ describe("renderApp", () => {
       throw new Error("App root not found in test");
     }
 
-    renderApp(root);
+    renderApp(root, []);
 
     expect(screen.getByRole("region", { name: "Todo app" })).toBeTruthy();
   });
