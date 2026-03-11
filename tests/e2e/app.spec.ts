@@ -57,3 +57,24 @@ test("adds a todo from the input row", async ({ page }) => {
   await expect(page.getByRole("listitem")).toHaveCount(1);
   await expect(page.getByText("Buy bread")).toBeVisible();
 });
+
+test("marks a todo as complete", async ({ page }) => {
+  await page.addInitScript((todos) => {
+    (window as { __GOAL_INITIAL_TODOS__?: Array<{ id: string; label: string }> }).__GOAL_INITIAL_TODOS__ =
+      todos;
+  }, [{ id: "todo-1", label: "Walk the dog" }]);
+
+  await page.goto("/");
+
+  const toggle = page.getByRole("checkbox", { name: "Walk the dog" });
+  const label = page.getByText("Walk the dog");
+
+  await expect(toggle).not.toBeChecked();
+
+  await toggle.click();
+
+  await expect(toggle).toBeChecked();
+  await expect
+    .poll(async () => label.evaluate((element) => window.getComputedStyle(element).textDecorationLine))
+    .toContain("line-through");
+});
