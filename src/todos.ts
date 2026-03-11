@@ -20,3 +20,15 @@ export function createInitialTodos(): Todo[] {
     completed: false
   }));
 }
+
+export function createAddTodoAction(): (label: string) => void {
+  return (label: string) => {
+    const capturedAdds = (
+      globalThis as { __GOAL_CAPTURED_ADDS__?: string[] }
+    ).__GOAL_CAPTURED_ADDS__;
+
+    if (capturedAdds) {
+      capturedAdds.push(label);
+    }
+  };
+}
