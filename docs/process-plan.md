@@ -35,3 +35,8 @@ Build in small, reviewable steps and document each meaningful decision.
 
 - Check docs for consistency before starting implementation.
 - Re-check docs after each completed feature if scope or behavior changed.
+
+## Delivery Workflow
+
+- Use the per-feature workflow in `docs/development-workflow.md`.
+- Commit the neutral scaffold on `main` before starting feature branches.

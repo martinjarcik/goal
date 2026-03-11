@@ -51,3 +51,8 @@
 
 - Status: accepted
 - Reason: implementation should begin from neutral app scaffolding so `Application Initialize` remains the first actual product feature
+
+### D-011: Use a baseline scaffold commit before backlog development
+
+- Status: accepted
+- Reason: feature branches should start from a clean `main` so backlog commits and pull requests stay focused on one feature at a time
