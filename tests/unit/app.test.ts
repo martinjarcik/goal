@@ -155,6 +155,24 @@ describe("renderApp", () => {
     expect(onToggle).toHaveBeenCalledWith("todo-1");
   });
 
+  it("applies completed styling only to completed todo labels", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    renderApp(root, [
+      { id: "todo-1", label: "Walk the dog", completed: true },
+      { id: "todo-2", label: "Read book", completed: false }
+    ]);
+
+    expect(screen.getByText("Walk the dog").classList.contains("todo-text-completed")).toBe(true);
+    expect(screen.getByText("Read book").classList.contains("todo-text-completed")).toBe(false);
+  });
+
   it("submits the trimmed label and clears the input", async () => {
     document.body.innerHTML = '<div id="app"></div>';
 

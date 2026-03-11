@@ -151,11 +151,18 @@ body {
   height: 22px;
   margin: 0;
   accent-color: #7c5cff;
+  transition: transform 180ms ease, accent-color 180ms ease;
 }
 
 .todo-text {
   color: #2d3443;
   font-size: 1rem;
+}
+
+.todo-text-completed {
+  color: #9aa1b2;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
 }
 
 @keyframes card-enter {

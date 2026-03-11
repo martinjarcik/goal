@@ -33,7 +33,9 @@ export function renderApp(
                 <li class="todo-item">
                   <label class="todo-main">
                     <input class="todo-checkbox" type="checkbox" data-todo-id="${todo.id}" ${todo.completed ? "checked" : ""} />
-                    <span class="todo-text">${escapeHtml(todo.label)}</span>
+                    <span class="todo-text${todo.completed ? " todo-text-completed" : ""}">${escapeHtml(
+                      todo.label
+                    )}</span>
                   </label>
                 </li>
               `
