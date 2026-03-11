@@ -59,7 +59,10 @@ export function mountApp(root: HTMLElement, initialTodos: Todo[]): void {
       return;
     }
 
-    todos = [...todos, { id: crypto.randomUUID(), label: trimmedValue }];
+    todos = [
+      ...todos,
+      { id: crypto.randomUUID(), label: trimmedValue, completed: false }
+    ];
     inputValue = "";
     rerender();
   };

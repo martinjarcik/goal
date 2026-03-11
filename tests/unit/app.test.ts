@@ -59,8 +59,8 @@ describe("renderApp", () => {
     }
 
     renderApp(root, [
-      { id: "1", label: "Buy milk" },
-      { id: "2", label: "Buy oranges" }
+      { id: "1", label: "Buy milk", completed: false },
+      { id: "2", label: "Buy oranges", completed: false }
     ]);
 
     expect(screen.getAllByRole("listitem")).toHaveLength(2);
@@ -77,7 +77,7 @@ describe("renderApp", () => {
       throw new Error("App root not found in test");
     }
 
-    renderApp(root, [{ id: "1", label: "Buy milk" }]);
+    renderApp(root, [{ id: "1", label: "Buy milk", completed: false }]);
 
     expect(
       screen.queryByText("No todos yet. Start by adding your first item.")
@@ -138,7 +138,7 @@ describe("mountApp", () => {
       throw new Error("App root not found in test");
     }
 
-    mountApp(root, [{ id: "1", label: "Buy milk" }]);
+    mountApp(root, [{ id: "1", label: "Buy milk", completed: false }]);
 
     const user = userEvent.setup();
     await user.type(screen.getByPlaceholderText("New item"), "Buy bread");
