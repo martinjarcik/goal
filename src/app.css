@@ -116,6 +116,11 @@ body {
   color: #2d3443;
 }
 
+.todo-text-completed {
+  color: #9aa1b2;
+  text-decoration: line-through;
+}
+
 @keyframes card-enter {
   from {
     opacity: 0;

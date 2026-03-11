@@ -187,4 +187,39 @@ describe("mountApp", () => {
     expect(screen.getAllByRole("listitem")).toHaveLength(1);
     expect(screen.getByText("Walk dog")).toBeTruthy();
   });
+
+  it("persists completion only for the selected todo across rerenders", async () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    mountApp(root, [
+      { id: "1", label: "Walk the dog", completed: false },
+      { id: "2", label: "Buy milk", completed: false }
+    ]);
+
+    const user = userEvent.setup();
+    await user.click(
+      screen.getByRole("checkbox", {
+        name: "Walk the dog"
+      })
+    );
+    await user.type(screen.getByPlaceholderText("New item"), "x");
+    await user.click(screen.getByRole("button", { name: "Add" }));
+
+    expect(
+      (screen.getByRole("checkbox", {
+        name: "Walk the dog"
+      }) as HTMLInputElement).checked
+    ).toBe(true);
+    expect(
+      (screen.getByRole("checkbox", {
+        name: "Buy milk"
+      }) as HTMLInputElement).checked
+    ).toBe(false);
+  });
 });

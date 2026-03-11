@@ -36,7 +36,7 @@ function renderTodoList(todos: Todo[]): string {
               data-todo-id="${todo.id}"
               ${todo.completed ? "checked" : ""}
             />
-            <span class="todo-text">${todo.label}</span>
+            <span class="todo-text ${todo.completed ? "todo-text-completed" : ""}">${todo.label}</span>
           </label>
         </li>
       `
@@ -87,6 +87,7 @@ export function mountApp(root: HTMLElement, initialTodos: Todo[]): void {
     const form = root.querySelector<HTMLFormElement>(".todo-form");
     const input = root.querySelector<HTMLInputElement>(".todo-input");
     const addButton = root.querySelector<HTMLButtonElement>(".add-button");
+    const checkboxes = root.querySelectorAll<HTMLInputElement>(".todo-checkbox");
 
     form?.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -112,6 +113,17 @@ export function mountApp(root: HTMLElement, initialTodos: Todo[]): void {
 
     addButton?.addEventListener("click", () => {
       addTodo();
+    });
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", () => {
+        const todoId = checkbox.dataset.todoId;
+
+        todos = todos.map((todo) =>
+          todo.id === todoId ? { ...todo, completed: checkbox.checked } : todo
+        );
+        rerender();
+      });
     });
   };
 
