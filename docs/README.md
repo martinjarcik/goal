@@ -26,7 +26,4 @@ This folder is the working memory for the project. Keep it current as the app ev
 - Delivery style: AI-assisted, iterative, small steps
 - Code status: neutral web starter initialized with working unit and e2e test setup
 
-## Usage
 
-- Read this file first when task context is needed.
-- Update linked docs when new scope, decisions, or architecture appear.

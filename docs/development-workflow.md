@@ -12,8 +12,8 @@ This project currently has a neutral scaffold that is not yet committed.
 
 ## Step 1: Start The Feature
 
-1. Pull `main`.
-2. Create a new feature branch.
+1. git fetch origin
+2. Create a new feature branch from main
 3. Review the feature specification.
 4. Suggest isolated TDD tests that verify requirements, not implementation details.
 
@@ -30,10 +30,12 @@ This project currently has a neutral scaffold that is not yet committed.
 ## Step 4: Unit-Test Loop
 
 Repeat one requirement at a time:
+Inform about finishing each individual step bellow.
 
 1. Add one failing unit test.
 2. Implement the smallest functional change to make it pass.
-3. Refactor.
+3. Refactor the implementation to improve the code and complete the code.
+4. Run the test
 4. Commit after each refactored green step.
 
 ## Step 5: Spec Review
