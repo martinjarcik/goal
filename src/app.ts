@@ -11,7 +11,7 @@ function renderAddForm(inputValue: string): string {
         placeholder="New item"
         value="${inputValue}"
       />
-      <button class="add-button" type="submit" ${isDisabled ? "disabled" : ""}>
+      <button class="add-button" type="button" ${isDisabled ? "disabled" : ""}>
         Add
       </button>
     </form>
@@ -52,14 +52,49 @@ export function mountApp(root: HTMLElement, initialTodos: Todo[]): void {
   let todos = [...initialTodos];
   let inputValue = "";
 
+  const addTodo = () => {
+    const trimmedValue = inputValue.trim();
+
+    if (trimmedValue === "") {
+      return;
+    }
+
+    todos = [...todos, { id: crypto.randomUUID(), label: trimmedValue }];
+    inputValue = "";
+    rerender();
+  };
+
   const rerender = () => {
     renderApp(root, todos, inputValue);
 
+    const form = root.querySelector<HTMLFormElement>(".todo-form");
     const input = root.querySelector<HTMLInputElement>(".todo-input");
+    const addButton = root.querySelector<HTMLButtonElement>(".add-button");
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      addTodo();
+    });
 
     input?.addEventListener("input", (event) => {
       inputValue = (event.target as HTMLInputElement).value;
-      rerender();
+
+      if (addButton) {
+        addButton.disabled = inputValue.trim() === "";
+      }
+    });
+
+    input?.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") {
+        return;
+      }
+
+      event.preventDefault();
+      addTodo();
+    });
+
+    addButton?.addEventListener("click", () => {
+      addTodo();
     });
   };
 

@@ -116,9 +116,6 @@ describe("mountApp", () => {
     mountApp(root, []);
 
     const user = userEvent.setup();
-    const initialButton = screen.getByRole("button", {
-      name: "Add"
-    }) as HTMLButtonElement;
 
     await user.type(screen.getByPlaceholderText("New item"), "   ");
     expect(
@@ -127,9 +124,49 @@ describe("mountApp", () => {
 
     await user.clear(screen.getByPlaceholderText("New item"));
     await user.type(screen.getByPlaceholderText("New item"), "Buy bread");
-    expect(initialButton.disabled).toBe(true);
     expect(
       (screen.getByRole("button", { name: "Add" }) as HTMLButtonElement).disabled
     ).toBe(false);
+  });
+
+  it("appends a new todo to the end of the list and clears the input on submit", async () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    mountApp(root, [{ id: "1", label: "Buy milk" }]);
+
+    const user = userEvent.setup();
+    await user.type(screen.getByPlaceholderText("New item"), "Buy bread");
+    await user.click(screen.getByRole("button", { name: "Add" }));
+
+    expect(
+      screen.getAllByRole("listitem").map((item) => item.textContent?.trim())
+    ).toEqual(["Buy milk", "Buy bread"]);
+    expect(
+      (screen.getByPlaceholderText("New item") as HTMLInputElement).value
+    ).toBe("");
+  });
+
+  it("submits the todo when the user presses Enter in the input", async () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    mountApp(root, []);
+
+    const user = userEvent.setup();
+    await user.type(screen.getByPlaceholderText("New item"), "Walk dog{Enter}");
+
+    expect(screen.getAllByRole("listitem")).toHaveLength(1);
+    expect(screen.getByText("Walk dog")).toBeTruthy();
   });
 });
