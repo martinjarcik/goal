@@ -20,7 +20,7 @@ export function renderApp(
   root: HTMLElement,
   todos: ReadonlyArray<TodoViewModel> = [],
   onAdd: AddTodoAction = () => {},
-  _onToggle: ToggleTodoAction = () => {}
+  onToggle: ToggleTodoAction = () => {}
 ): void {
   const bodyContent =
     todos.length === 0
@@ -32,7 +32,7 @@ export function renderApp(
               (todo) => `
                 <li class="todo-item">
                   <label class="todo-main">
-                    <input class="todo-checkbox" type="checkbox" ${todo.completed ? "checked" : ""} />
+                    <input class="todo-checkbox" type="checkbox" data-todo-id="${todo.id}" ${todo.completed ? "checked" : ""} />
                     <span class="todo-text">${escapeHtml(todo.label)}</span>
                   </label>
                 </li>
@@ -58,9 +58,10 @@ export function renderApp(
   const form = root.querySelector<HTMLFormElement>(".todo-form");
   const input = root.querySelector<HTMLInputElement>(".todo-input");
   const addButton = root.querySelector<HTMLButtonElement>(".add-button");
+  const toggleInputs = root.querySelectorAll<HTMLInputElement>(".todo-checkbox");
 
   if (!form || !input || !addButton) {
-    throw new Error("Add todo form elements not found");
+    throw new Error("Todo form elements not found");
   }
 
   const syncSubmitState = () => {
@@ -81,5 +82,17 @@ export function renderApp(
     onAdd(trimmedValue);
     input.value = "";
     syncSubmitState();
+  });
+
+  toggleInputs.forEach((toggleInput) => {
+    toggleInput.addEventListener("change", () => {
+      const todoId = toggleInput.dataset.todoId;
+
+      if (!todoId) {
+        throw new Error("Todo toggle id not found");
+      }
+
+      onToggle(todoId);
+    });
   });
 }

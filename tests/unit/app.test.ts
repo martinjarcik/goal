@@ -131,6 +131,30 @@ describe("renderApp", () => {
     expect((addButton as HTMLButtonElement).disabled).toBe(false);
   });
 
+  it("calls onToggle with the selected todo id when the completion control is used", async () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    const onToggle = vi.fn();
+
+    renderApp(
+      root,
+      [{ id: "todo-1", label: "Walk the dog", completed: false }],
+      () => {},
+      onToggle
+    );
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("checkbox", { name: "Walk the dog" }));
+
+    expect(onToggle).toHaveBeenCalledWith("todo-1");
+  });
+
   it("submits the trimmed label and clears the input", async () => {
     document.body.innerHTML = '<div id="app"></div>';
 
