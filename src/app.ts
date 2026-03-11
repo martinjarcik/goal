@@ -28,7 +28,16 @@ export function renderApp(
       : `
         <ul class="todo-list">
           ${todos
-            .map((todo) => `<li class="todo-item">${escapeHtml(todo.label)}</li>`)
+            .map(
+              (todo) => `
+                <li class="todo-item">
+                  <label class="todo-main">
+                    <input class="todo-checkbox" type="checkbox" ${todo.completed ? "checked" : ""} />
+                    <span class="todo-text">${escapeHtml(todo.label)}</span>
+                  </label>
+                </li>
+              `
+            )
             .join("")}
         </ul>
       `;

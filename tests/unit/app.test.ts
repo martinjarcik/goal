@@ -49,8 +49,8 @@ describe("renderApp", () => {
     }
 
     renderApp(root, [
-      { id: "todo-1", label: "Buy milk" },
-      { id: "todo-2", label: "Read book" }
+      { id: "todo-1", label: "Buy milk", completed: false },
+      { id: "todo-2", label: "Read book", completed: false }
     ]);
 
     expect(screen.queryByText("No todos yet.")).toBeNull();
@@ -59,6 +59,28 @@ describe("renderApp", () => {
     expect(screen.getByText("Buy milk")).toBeTruthy();
     expect(screen.getByText("Read book")).toBeTruthy();
     expect((screen.getByRole("button", { name: "Add" }) as HTMLButtonElement).disabled).toBe(true);
+  });
+
+  it("renders completion controls that reflect todo completion state", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    renderApp(root, [
+      { id: "todo-1", label: "Walk the dog", completed: false },
+      { id: "todo-2", label: "Read book", completed: true }
+    ]);
+
+    expect((screen.getByRole("checkbox", { name: "Walk the dog" }) as HTMLInputElement).checked).toBe(
+      false
+    );
+    expect((screen.getByRole("checkbox", { name: "Read book" }) as HTMLInputElement).checked).toBe(
+      true
+    );
   });
 
   it("renders todo labels as text instead of injecting HTML", () => {
@@ -71,7 +93,11 @@ describe("renderApp", () => {
     }
 
     renderApp(root, [
-      { id: "todo-1", label: '<span data-testid="xss-marker">Buy milk</span>' }
+      {
+        id: "todo-1",
+        label: '<span data-testid="xss-marker">Buy milk</span>',
+        completed: false
+      }
     ]);
 
     expect(screen.queryByTestId("xss-marker")).toBeNull();

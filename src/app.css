@@ -134,12 +134,28 @@ body {
 
 .todo-item {
   padding: 12px 0;
-  color: #2d3443;
-  font-size: 1rem;
 }
 
 .todo-item + .todo-item {
   margin-top: 2px;
+}
+
+.todo-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.todo-checkbox {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: #7c5cff;
+}
+
+.todo-text {
+  color: #2d3443;
+  font-size: 1rem;
 }
 
 @keyframes card-enter {
