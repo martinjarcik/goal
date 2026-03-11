@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { renderApp } from "../../src/app";
 
@@ -61,6 +61,25 @@ describe("renderApp", () => {
     expect((screen.getByRole("button", { name: "Add" }) as HTMLButtonElement).disabled).toBe(true);
   });
 
+  it("renders todo labels as text instead of injecting HTML", () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    renderApp(root, [
+      { id: "todo-1", label: '<span data-testid="xss-marker">Buy milk</span>' }
+    ]);
+
+    expect(screen.queryByTestId("xss-marker")).toBeNull();
+    expect(
+      screen.getByText('<span data-testid="xss-marker">Buy milk</span>')
+    ).toBeTruthy();
+  });
+
   it("enables submit only when the trimmed input has content", async () => {
     document.body.innerHTML = '<div id="app"></div>';
 
@@ -84,5 +103,30 @@ describe("renderApp", () => {
     await user.type(input, "Buy bread");
 
     expect((addButton as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  it("submits the trimmed label and clears the input", async () => {
+    document.body.innerHTML = '<div id="app"></div>';
+
+    const root = document.querySelector<HTMLElement>("#app");
+
+    if (!root) {
+      throw new Error("App root not found in test");
+    }
+
+    const onAdd = vi.fn();
+
+    renderApp(root, [], onAdd);
+
+    const user = userEvent.setup();
+    const input = screen.getByPlaceholderText("New item");
+    const addButton = screen.getByRole("button", { name: "Add" });
+
+    await user.type(input, "  Buy bread  ");
+    await user.click(addButton);
+
+    expect(onAdd).toHaveBeenCalledWith("Buy bread");
+    expect((input as HTMLInputElement).value).toBe("");
+    expect((addButton as HTMLButtonElement).disabled).toBe(true);
   });
 });

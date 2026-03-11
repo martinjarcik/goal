@@ -5,6 +5,15 @@ type TodoViewModel = {
 
 type AddTodoAction = (label: string) => void;
 
+function escapeHtml(text: string): string {
+  return text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
 export function renderApp(
   root: HTMLElement,
   todos: ReadonlyArray<TodoViewModel> = [],
@@ -16,7 +25,7 @@ export function renderApp(
       : `
         <ul class="todo-list">
           ${todos
-            .map((todo) => `<li class="todo-item">${todo.label}</li>`)
+            .map((todo) => `<li class="todo-item">${escapeHtml(todo.label)}</li>`)
             .join("")}
         </ul>
       `;

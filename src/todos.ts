@@ -21,14 +21,13 @@ export function createInitialTodos(): Todo[] {
   }));
 }
 
-export function createAddTodoAction(): (label: string) => void {
-  return (label: string) => {
-    const capturedAdds = (
-      globalThis as { __GOAL_CAPTURED_ADDS__?: string[] }
-    ).__GOAL_CAPTURED_ADDS__;
-
-    if (capturedAdds) {
-      capturedAdds.push(label);
+export function appendTodo(todos: ReadonlyArray<Todo>, label: string): Todo[] {
+  return [
+    ...todos,
+    {
+      id: `todo-${todos.length + 1}`,
+      label,
+      completed: false
     }
-  };
+  ];
 }

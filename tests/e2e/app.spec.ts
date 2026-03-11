@@ -36,12 +36,6 @@ test("shows the correct todo content for empty and populated states", async ({ p
 });
 
 test("adds a todo from the input row", async ({ page }) => {
-  await page.addInitScript(() => {
-    (window as {
-      __GOAL_CAPTURED_ADDS__?: string[];
-    }).__GOAL_CAPTURED_ADDS__ = [];
-  });
-
   await page.goto("/");
 
   const input = page.getByPlaceholder("New item");
@@ -57,16 +51,9 @@ test("adds a todo from the input row", async ({ page }) => {
   await addButton.click();
 
   await expect(input).toHaveValue("");
-  await expect
-    .poll(async () =>
-      page.evaluate(
-        () =>
-          (
-            window as {
-              __GOAL_CAPTURED_ADDS__?: string[];
-            }
-          ).__GOAL_CAPTURED_ADDS__ ?? []
-      )
-    )
-    .toEqual(["Buy bread"]);
+  await expect(addButton).toBeDisabled();
+  await expect(page.getByText("No todos yet.")).toHaveCount(0);
+  await expect(page.getByRole("list")).toBeVisible();
+  await expect(page.getByRole("listitem")).toHaveCount(1);
+  await expect(page.getByText("Buy bread")).toBeVisible();
 });
