@@ -11,3 +11,26 @@ test("shows the Todo app shell on first load", async ({ page }) => {
 
 
 });
+
+test("shows the correct todo content for empty and populated states", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.getByText("No todos yet.")).toBeVisible();
+  await expect(page.getByRole("list")).toHaveCount(0);
+
+  await page.addInitScript((todos) => {
+    (window as { __GOAL_INITIAL_TODOS__?: Array<{ id: string; label: string }> }).__GOAL_INITIAL_TODOS__ =
+      todos;
+  }, [
+    { id: "todo-1", label: "Buy milk" },
+    { id: "todo-2", label: "Read book" }
+  ]);
+
+  await page.reload();
+
+  await expect(page.getByText("No todos yet.")).toHaveCount(0);
+  await expect(page.getByRole("list")).toBeVisible();
+  await expect(page.getByRole("listitem")).toHaveCount(2);
+  await expect(page.getByText("Buy milk")).toBeVisible();
+  await expect(page.getByText("Read book")).toBeVisible();
+});

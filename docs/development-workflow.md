@@ -12,10 +12,9 @@ This project currently has a neutral scaffold that is not yet committed.
 
 ## Step 1: Start The Feature
 
-1. git fetch origin
-2. Create a new feature branch from main
-3. Review the feature specification.
-4. Suggest isolated TDD tests that verify requirements, not implementation details.
+1. Create a new feature branch from main
+2. Review the feature specification.
+3. Suggest isolated TDD tests that verify requirements, not implementation details.
 
 ## Step 2: Acceptance Test First
 
@@ -52,7 +51,8 @@ Inform about finishing each individual sub-step bellow.
 
 ## Step 7: Next Feature
 
-1. Return to `main`.
+1. Wait for confirmation PR has been merged to main
+1. switch to main and fast-forward it to origin/main
 2. Move to the next backlog item from left to right.
 
 ## Branch Naming
